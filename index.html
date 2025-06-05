@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café e Cognição: Análise Científica Interativa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            /* Paleta de cores */
+            --color-primary: #4A3520;
+            --color-secondary: #8B5A2B;
+            --color-accent: #1A9DAD;
+            --color-neutral-light: #F5F1E8;
+            --color-neutral-medium: #E8E8E8;
+            --color-warning: #E67E22;
+            --color-white: #FFFFFF;
+            --color-black: #333333;
+            
+            /* Espaçamento */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 3rem;
+            --spacing-xl: 5rem;
+            
+            /* Sombras */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            
+            /* Bordas */
+            --border-radius-sm: 6px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 24px;
+            
+            /* Transições */
+            --transition-fast: 0.2s ease;
+            --transition-medium: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--color-black);
+            background-color: var(--color-neutral-light);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+        
+        /* Tipografia */
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-primary);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: var(--spacing-sm);
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-accent);
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--color-secondary);
+        }
+        
+        p {
+            margin-bottom: var(--spacing-md);
+            font-size: 1.05rem;
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: var(--spacing-md) 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48cGF0aCBkPSJNMzAgMzBtLTI4IDBhMjggMjggMCAxIDAgNTYgMCAyOCAyOCAwIDEgMC01NiAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYxMCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+');
+            opacity: 0.1;
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            color: var(--color-white);
+            margin-bottom: var(--spacing-sm);
+            font-size: 3.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            color: var(--color-neutral-light);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto var(--spacing-lg);
+        }
+        
+        .header-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-accent);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: var(--color-neutral-medium);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .author {
+            font-size: 0.9rem;
+            color: var(--color-neutral-medium);
+            margin-top: var(--spacing-md);
+        }
+        
+        /* Navegação */
+        .nav-container {
+            background-color: var(--color-white);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition-medium);
+        }
+        
+        .nav-container.scrolled {
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+        }
+        
+        .nav-item {
+            position: relative;
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--color-primary);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-item:hover {
+            color: var(--color-accent);
+        }
+        
+        .nav-item.active {
+            color: var(--color-accent);
+            border-bottom: 3px solid var(--color-accent);
+        }
+        
+        .nav-item i {
+            font-size: 1.1rem;
+        }
+        
+        /* Seções */
+        .section {
+            padding: var(--spacing-xl) 0;
+            background-color: var(--color-white);
+            margin-bottom: var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-medium);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-header {
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+        
+        /* Cards */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .card {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: var(--spacing-md);
+            flex: 1 1 300px;
+            max-width: 350px;
+            transition: var(--transition-medium);
+            border-top: 4px solid var(--color-accent);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--color-neutral-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-accent);
+            font-size: 2rem;
+            transition: var(--transition-medium);
+        }
+        
+        .card:hover .card-icon {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+        }
+        
+        .card h3 {
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .card p {
+            color: var(--color-black);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+        
+        /* Gráficos */
+        .chart-container {
+            margin: var(--spacing-lg) 0;
+            padding: var(--spacing-md);
+            background-color: var(--color-neutral-light);
+            border-radius: var(--border-radius-md);
+        }
+        
+        .chart {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+        
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 40px;
+            background: linear-gradient(to top, var(--color-secondary), var(--color-accent));
+            border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+            transition: height 1s ease;
+        }
+        
+        .chart-label {
+            position: absolute;
+            bottom: -30px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--color-black);
+            width: 100px;
+            transform: translateX(-30px);
+        }
+        
+        /* Acordeão */
+        .accordion {
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .accordion-item {
+            margin-bottom: var(--spacing-sm);
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .accordion-header {
+            background-color: var(--color-neutral-light);
+            padding: var(--spacing-md);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-fast);
+        }
+        
+        .accordion-header:hover {
+            background-color: var(--color-neutral-medium);
+        }
+        
+        .accordion-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .accordion-icon {
+            font-size: 1.2rem;
+            transition: var(--transition-fast);
+        }
+        
+        .accordion-content {
+            background-color: var(--color-white);
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-medium), padding var(--transition-medium);
+        }
+        
+        .accordion-item.active .accordion-content {
+            padding: var(--spacing-md);
+            max-height: 500px;
+        }
+        
+        .accordion-item.active .accordion-icon {
+            transform: rotate(45deg);
+        }
+        
+        /* Seletor */
+        .selector {
+            margin: var(--spacing-lg) 0;
+            text-align: center;
+        }
+        
+        .selector select {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--color-neutral-medium);
+            border-radius: var(--border-radius-sm);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            background-color: var(--color-white);
+            color: var(--color-primary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%234A3520' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 40px;
+        }
+        
+        .selector select:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+        
+        /* Resultado do seletor */
+        .selector-result {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-md);
+            background-color: var(--color-neutral-light);
+            border-radius: var(--border-radius-md);
+            display: none;
+        }
+        
+        .selector-result.active {
+            display: block;
+            animation: fadeIn var(--transition-medium);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Fluxograma */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .flow-icon {
+            width: 100px;
+            height: 100px;
+            background-color: var(--color-neutral-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-md);
+            color: var(--color-accent);
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+        
+        .flow-content {
+            flex: 1;
+        }
+        
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--color-accent);
+            margin: var(--spacing-sm) 0;
+        }
+        
+        /* Rodapé */
+        .footer {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: var(--spacing-lg) 0;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.9rem;
+            color: var(--color-neutral-medium);
+        }
+        
+        .social-link {
+            color: var(--color-accent);
+            font-size: 1.5rem;
+            margin: 0 var(--spacing-xs);
+            transition: var(--transition-fast);
+        }
+        
+        .social-link:hover {
+            color: var(--color-white);
+            transform: translateY(-3px);
+        }
+        
+        /* Botão voltar ao topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--color-accent);
+            color: var(--color-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-medium);
+            box-shadow: var(--shadow-md);
+            z-index: 99;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--color-primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .header-content {
+                padding: var(--spacing-lg) 0;
+            }
+            
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-item {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+            
+            .flow-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .flow-icon {
+                margin-right: 0;
+                margin-bottom: var(--spacing-sm);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+            
+            .section {
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <i class="fas fa-coffee header-icon"></i>
+            <h1>Café e Cognição</h1>
+            <p class="subtitle">Uma Análise Interativa Baseada em Evidências Científicas</p>
+            <p>O café é uma das bebidas mais consumidas no mundo, com efeitos complexos no cérebro. A ciência mostra um quadro de dois lados: o consumo moderado oferece benefícios cognitivos e protetores, mas o excesso ou o consumo em momentos errados pode trazer riscos.</p>
+            <p class="author">Site criado para intuito educativo por: Pedro Ambrósio Benko</p>
+        </div>
+    </header>
+    
+    <nav class="nav-container">
+        <div class="container">
+            <div class="nav">
+                <a href="#visao-geral" class="nav-item active"><i class="fas fa-home"></i> Visão Geral</a>
+                <a href="#beneficios" class="nav-item"><i class="fas fa-brain"></i> Benefícios Imediatos</a>
+                <a href="#saude" class="nav-item"><i class="fas fa-heartbeat"></i> Saúde a Longo Prazo</a>
+                <a href="#riscos" class="nav-item"><i class="fas fa-exclamation-triangle"></i> Riscos e Moderação</a>
+                <a href="#como-funciona" class="nav-item"><i class="fas fa-microscope"></i> Como Funciona?</a>
+                <a href="#referencias" class="nav-item"><i class="fas fa-book"></i> Referências</a>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <section id="visao-geral" class="section visible">
+            <div class="section-header">
+                <h2>Um Resumo Equilibrado</h2>
+            </div>
+            <p>O café é uma das bebidas mais consumidas no mundo, com efeitos complexos no cérebro. A ciência mostra um quadro de dois lados: o consumo moderado oferece benefícios cognitivos e protetores, mas o excesso ou o consumo em momentos errados pode trazer riscos. Esta aplicação resume as principais descobertas para o ajudar a fazer escolhas informadas.</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <h3>Dose Moderada</h3>
+                    <p>O ponto ideal para a maioria dos benefícios é de 2 a 4 xícaras por dia (até 400mg de cafeína).</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Proteção a Longo Prazo</h3>
+                    <p>Associado a um menor risco de doenças como Parkinson e Alzheimer.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3>Atenção ao Sono</h3>
+                    <p>O principal efeito adverso é a perturbação da qualidade do sono, mesmo se consumido à tarde.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="beneficios" class="section">
+            <div class="section-header">
+                <h2>Impacto nas Funções Cognitivas</h2>
+            </div>
+            <p>O consumo diário de café, principalmente devido à cafeína, modula várias funções cognitivas. Os efeitos mais notáveis são no aumento do alerta e na velocidade de processamento, enquanto o impacto na memória pode ser mais variável.</p>
+            
+            <div class="chart-container">
+                <div class="chart">
+                    <div class="chart-bar" style="left: 10%; height: 90%; width: 60px;">
+                        <div class="chart-label">Atenção/Vigilância</div>
+                    </div>
+                    <div class="chart-bar" style="left: 30%; height: 85%; width: 60px;">
+                        <div class="chart-label">Velocidade de Processamento</div>
+                    </div>
+                    <div class="chart-bar" style="left: 50%; height: 70%; width: 60px;">
+                        <div class="chart-label">Memória de Trabalho</div>
+                    </div>
+                    <div class="chart-bar" style="left: 70%; height: 50%; width: 60px;">
+                        <div class="chart-label">Memória de Longo Prazo</div>
+                    </div>
+                    <div class="chart-bar" style="left: 90%; height: 65%; width: 60px;">
+                        <div class="chart-label">Função Executiva</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="saude" class="section">
+            <div class="section-header">
+                <h2>Proteção Contra Doenças Neurodegenerativas</h2>
+            </div>
+            <p>A pesquisa sugere que o consumo habitual e moderado de café pode ter um papel protetor contra o declínio cognitivo relacionado com a idade. Selecione uma condição abaixo para ver a redução de risco associada e a dose ideal, com base em meta-análises científicas.</p>
+            
+            <div class="selector">
+                <select id="disease-selector">
+                    <option value="alzheimer">Doença de Alzheimer</option>
+                    <option value="parkinson">Doença de Parkinson</option>
+                    <option value="avc">Acidente Vascular Cerebral (AVC)</option>
+                    <option value="demencia">Demência Pós-AVC</option>
+                </select>
+            </div>
+            
+            <div class="selector-result active" id="result-alzheimer">
+                <h3>Doença de Alzheimer</h3>
+                <p>A proteção máxima contra Alzheimer parece ser atingida com um consumo de aproximadamente 2.5 xícaras por dia, correspondendo a uma redução de risco de 26% (Risco Relativo 0.74). Doses mais altas podem não oferecer benefício adicional.</p>
+                <p><strong>Dose Ótima Associada:</strong> ~2.5 xícaras/dia</p>
+            </div>
+        </section>
+        
+        <section id="riscos" class="section">
+            <div class="section-header">
+                <h2>Riscos, Moderação e Fatores Individuais</h2>
+            </div>
+            <p>Apesar dos benefícios, o café não é isento de riscos. A resposta de cada pessoa é única, influenciada pela dose, genética e outros fatores do estilo de vida. Explore os tópicos abaixo para entender melhor.</p>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>Qualidade e Arquitetura do Sono</h3>
+                        <div class="accordion-icon">+</div>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Este é talvez o efeito adverso mais significativo. A cafeína, mesmo consumida 6 a 12 horas antes de deitar, pode reduzir a qualidade do sono, diminuir o tempo de sono profundo e aumentar o tempo para adormecer.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>Ansiedade e Nervosismo</h3>
+                        <div class="accordion-icon">+</div>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Por ser um estimulante, a cafeína pode induzir ou agravar sintomas de ansiedade, agitação e nervosismo, especialmente em pessoas sensíveis ou predispostas a transtornos de ansiedade.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>Abstinência e Dependência</h3>
+                        <div class="accordion-icon">+</div>
+                    </div>
+                    <div class="accordion-content">
+                        <p>O uso regular leva à dependência física. A interrupção abrupta pode causar uma síndrome de abstinência com sintomas como dores de cabeça, fadiga, irritabilidade e dificuldade de concentração, geralmente começando 12-24h após a última dose.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>O Papel da Genética</h3>
+                        <div class="accordion-icon">+</div>
+                    </div>
+                    <div class="accordion-content">
+                        <p>A sua genética influencia fortemente a sua resposta. Polimorfismos no gene CYP1A2 determinam se você é um metabolizador rápido ou lento da cafeína, afetando tanto os benefícios quanto os efeitos adversos que você experimenta.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="como-funciona" class="section">
+            <div class="section-header">
+                <h2>Como o Café Influencia o Cérebro?</h2>
+            </div>
+            <p>Os efeitos do café vão muito além da cafeína. É uma interação complexa de compostos que atuam em diferentes vias cerebrais. O mecanismo principal é o bloqueio da adenosina, um neuromodulador que nos faz sentir cansados.</p>
+            
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="flow-icon">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <div class="flow-content">
+                        <h3>1. Consumo de Café</h3>
+                        <p>A cafeína e polifenóis entram na corrente sanguínea.</p>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="flow-content">
+                        <h3>2. Bloqueio da Adenosina</h3>
+                        <p>A cafeína liga-se aos receptores de adenosina (A2A), impedindo-a de atuar. Isto reduz a sonolência.</p>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="flow-content">
+                        <h3>3. Efeitos Neurológicos</h3>
+                        <div class="card-container">
+                            <div class="card">
+                                <h3>Aumento de Neurotransmissores</h3>
+                                <p>Liberta dopamina e norepinefrina, melhorando o humor, foco e alerta.</p>
+                            </div>
+                            <div class="card">
+                                <h3>Redução da Neuroinflamação</h3>
+                                <p>Os polifenóis do café atuam como antioxidantes, protegendo as células cerebrais.</p>
+                            </div>
+                            <div class="card">
+                                <h3>Menor Acúmulo de Placas</h3>
+                                <p>Pode ajudar a diminuir o acúmulo de proteínas beta-amiloide, associadas ao Alzheimer.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="referencias" class="section">
+            <div class="section-header">
+                <h2>Referências Científicas</h2>
+            </div>
+            <p>Esta aplicação interativa foi desenvolvida com base em informações consolidadas de diversas publicações científicas de acesso aberto, incluindo revisões sistemáticas e meta-análises. Abaixo, uma seleção representativa das fontes que informaram o conteúdo:</p>
+            
+            <ul style="list-style-type: disc; margin-left: 20px; line-height: 1.8;">
+                <li>Gardener, S. L., et al. (2021). Higher Coffee Consumption Is Associated With Slower Cognitive Decline and Less Cerebral Aβ-Amyloid Accumulation Over 126 Months: Data From the Australian Imaging, Biomarkers, and Lifestyle (AIBL) Study. <em>Frontiers in Aging Neuroscience</em>, 13, 744872.</li>
+                <li>Zhu, H., et al. (2024). Coffee, tea consumption and risk of cognitive disorders: an updated dose-response meta-analysis. <em>Food & Function</em>, 15(2), 514-529.</li>
+                <li>Liu, R., et al. (2024). Coffee consumption and the risk of dementia: a systematic review and dose-response meta-analysis of cohort studies. <em>Food & Function</em>, 15(1), 143-153.</li>
+                <li>Haskell-Ramsay, C. F., et al. (2018). The Acute Effects of Caffeinated Black Coffee on Cognition and Mood in Healthy Young and Older Adults. <em>Nutrients</em>, 10(10), 1386.</li>
+                <li>Zhang, Y., et al. (2022). Consumption of coffee and tea and risk of developing stroke, dementia, and poststroke dementia: A cohort study in the UK Biobank. <em>PLoS Medicine</em>, 19(2), e1003907.</li>
+            </ul>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>Informações sintetizadas a partir de estudos e meta-análises de acesso aberto sobre o consumo de café e a saúde cognitiva. Esta aplicação é para fins informativos e não substitui o aconselhamento médico profissional.</p>
+            <a href="https://instagram.com/neuropedroambrosio" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+    
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <script>
+        // Navegação suave
+        document.querySelectorAll('.nav-item').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Animação de seções ao scroll
+        const sections = document.querySelectorAll('.section');
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        function checkSections() {
+            const triggerBottom = window.innerHeight * 0.8;
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('visible');
+                }
+            });
+            
+            // Atualizar navegação ativa
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                
+                if (sectionTop < 100) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        // Acordeão
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            
+            header.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Fechar todos os itens
+                accordionItems.forEach(accItem => {
+                    accItem.classList.remove('active');
+                });
+                
+                // Abrir o item clicado (se não estava ativo)
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        
+        // Seletor de doenças
+        const diseaseSelector = document.getElementById('disease-selector');
+        const results = document.querySelectorAll('.selector-result');
+        
+        diseaseSelector.addEventListener('change', function() {
+            const selected = this.value;
+            
+            results.forEach(result => {
+                result.classList.remove('active');
+            });
+            
+            document.getElementById('result-' + selected).classList.add('active');
+        });
+        
+        // Botão voltar ao topo
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+            
+            checkSections();
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Navegação fixa
+        const navContainer = document.querySelector('.nav-container');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navContainer.classList.add('scrolled');
+            } else {
+                navContainer.classList.remove('scrolled');
+            }
+        });
+        
+        // Inicializar
+        checkSections();
+    </script>
+</body>
+</html>
